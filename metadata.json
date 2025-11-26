@@ -1,0 +1,8 @@
+{
+  "name": "Gemini Workspace",
+  "description": "A modern, minimalist AI chat interface featuring Canvas for document creation and Agent mode for instant web application generation.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ]
+}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gemini Workspace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            typography: {
+              DEFAULT: {
+                css: {
+                  color: '#d4d4d8',
+                  a: { color: '#60a5fa' },
+                  h1: { color: '#f4f4f5' },
+                  h2: { color: '#e4e4e7' },
+                  h3: { color: '#d4d4d8' },
+                  strong: { color: '#f4f4f5' },
+                  code: { color: '#f4f4f5' },
+                  blockquote: { color: '#a1a1aa' },
+                },
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      body { font-family: 'Inter', sans-serif; }
+      /* Custom scrollbar for webkit */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #52525b; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #71717a; }
+      
+      /* --- DOCUMENT PAPER VIEW --- */
+      .document-paper {
+        background-color: #ffffff;
+        color: #1f2937; /* Gray-800 */
+        font-family: 'Times New Roman', Times, serif; /* Classic document font */
+        padding: 3rem; /* 48px */
+        min-height: 29.7cm; /* A4 Height */
+        width: 21cm; /* A4 Width */
+        margin: 2rem auto;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        line-height: 1.6;
+        font-size: 12pt;
+      }
+
+      /* Responsive paper */
+      @media (max-width: 850px) {
+        .document-paper {
+          width: 100%;
+          padding: 1.5rem;
+          min-height: auto;
+        }
+      }
+
+      .document-paper h1 { font-family: 'Inter', sans-serif; font-size: 24pt; font-weight: 700; color: #111827; margin-bottom: 1rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; }
+      .document-paper h2 { font-family: 'Inter', sans-serif; font-size: 18pt; font-weight: 600; color: #374151; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+      .document-paper h3 { font-family: 'Inter', sans-serif; font-size: 14pt; font-weight: 600; color: #4b5563; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+      .document-paper p { margin-bottom: 1rem; text-align: justify; }
+      .document-paper ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+      .document-paper ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+      .document-paper blockquote { border-left: 4px solid #3b82f6; background-color: #f9fafb; padding: 0.5rem 1rem; font-style: italic; color: #555; margin: 1rem 0; }
+      .document-paper code { background-color: #f3f4f6; padding: 0.1rem 0.3rem; border-radius: 0.2rem; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: #ef4444; }
+      .document-paper pre { background-color: #f3f4f6; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-bottom: 1rem; }
+      .document-paper pre code { background-color: transparent; color: #1f2937; }
+
+      /* --- EXCEL STYLE TABLES --- */
+      .document-paper table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        font-family: 'Inter', sans-serif; /* Clean font for tables */
+        font-size: 10pt;
+        border: 1px solid #d1d5db;
+      }
+      
+      .document-paper th {
+        background-color: #f3f4f6;
+        color: #111827;
+        font-weight: 600;
+        text-align: left;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+      }
+
+      .document-paper td {
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        color: #374151;
+      }
+
+      .document-paper tr:nth-child(even) {
+        background-color: #f9fafb;
+      }
+
+      /* Dark Mode Editor Styles (Default Prose) */
+      .prose table { width: 100%; border-collapse: collapse; margin: 1em 0; }
+      .prose th, .prose td { padding: 0.5rem; border: 1px solid #3f3f46; text-align: left; }
+      .prose th { background-color: #27272a; font-weight: 600; }
+      .prose h1 { font-size: 2.25rem; font-weight: 700; margin-bottom: 1rem; margin-top: 0; line-height: 1.1; }
+      .prose h2 { font-size: 1.5rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; border-bottom: 1px solid #3f3f46; padding-bottom: 0.3rem; }
+      .prose p { margin-bottom: 1rem; line-height: 1.7; }
+      .prose ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+      .prose ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+      .prose blockquote { border-left: 4px solid #60a5fa; padding-left: 1rem; font-style: italic; background: #18181b; padding: 1rem; border-radius: 0 0.5rem 0.5rem 0; }
+      .prose code { background: #27272a; padding: 0.2rem 0.4rem; rounded: 0.25rem; font-family: monospace; font-size: 0.9em; }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "uuid": "https://aistudiocdn.com/uuid@^13.0.0",
+    "jszip": "https://aistudiocdn.com/jszip@^3.10.1",
+    "marked": "https://aistudiocdn.com/marked@^15.0.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-zinc-950 text-zinc-100 antialiased overflow-hidden">
+    <div id="root"></div>
+  </body>
+</html>
