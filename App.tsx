@@ -364,8 +364,10 @@ const App: React.FC = () => {
                                     files: mergedFiles,
                                     status: 'streaming'
                                 };
-                                setActiveArtifact(prevArt => {
-                                    if (prevArt?.id === updatedArtifact?.id) return updatedArtifact;
+                                setActiveArtifact((prevArt) => {
+                                    if (prevArt && updatedArtifact && prevArt.id === updatedArtifact.id) {
+                                        return updatedArtifact;
+                                    }
                                     return prevArt;
                                 });
                             }

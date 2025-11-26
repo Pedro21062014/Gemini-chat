@@ -184,7 +184,10 @@ export const generateVideo = async (prompt: string): Promise<string> => {
     operation = await ai.operations.getVideosOperation({operation: operation});
   }
 
-  const downloadLink = operation.response?.generatedVideos?.[0]?.video?.uri;
+  // Safe access for download link
+  const videos = operation.response?.generatedVideos;
+  const downloadLink = videos?.[0]?.video?.uri;
+
   if (!downloadLink) throw new Error("Video generation failed: No URI returned.");
 
   // Fetch with API Key
