@@ -1,10 +1,6 @@
 import { GoogleGenAI, GenerateContentStreamResult } from "@google/genai";
 import { AppMode, ModelId, Attachment } from "../types";
 
-const API_KEY = process.env.API_KEY || ''; 
-
-const ai = new GoogleGenAI({ apiKey: API_KEY });
-
 const FILE_SEPARATOR = "___FILE:";
 
 const SYSTEM_INSTRUCTIONS: Record<string, string> = {
@@ -53,6 +49,10 @@ const SYSTEM_INSTRUCTIONS: Record<string, string> = {
   `
 };
 
+const getAiClient = () => {
+  return new GoogleGenAI({ apiKey: process.env.API_KEY });
+};
+
 // --- Text/Chat Streaming ---
 export const streamResponse = async (
   modelId: ModelId,
@@ -63,10 +63,11 @@ export const streamResponse = async (
   useSearch: boolean,
   onChunk: (text: string) => void
 ): Promise<GenerateContentStreamResult> => {
-  if (!API_KEY) {
+  if (!process.env.API_KEY) {
     throw new Error("API Key is missing.");
   }
 
+  const ai = getAiClient();
   const systemInstruction = SYSTEM_INSTRUCTIONS[mode] || SYSTEM_INSTRUCTIONS[AppMode.Chat];
   
   // Configure Tools
@@ -136,8 +137,9 @@ export const streamResponse = async (
 
 // --- Image Generation ---
 export const generateImage = async (prompt: string): Promise<string> => {
-  if (!API_KEY) throw new Error("API Key missing");
+  if (!process.env.API_KEY) throw new Error("API Key missing");
   
+  const ai = getAiClient();
   const response = await ai.models.generateContent({
     model: 'gemini-2.5-flash-image',
     contents: {
@@ -162,8 +164,9 @@ export const generateImage = async (prompt: string): Promise<string> => {
 
 // --- Video Generation ---
 export const generateVideo = async (prompt: string): Promise<string> => {
-  if (!API_KEY) throw new Error("API Key missing");
+  if (!process.env.API_KEY) throw new Error("API Key missing");
 
+  const ai = getAiClient();
   // VEO 3.1
   let operation = await ai.models.generateVideos({
     model: 'veo-3.1-fast-generate-preview',
@@ -185,7 +188,7 @@ export const generateVideo = async (prompt: string): Promise<string> => {
   if (!downloadLink) throw new Error("Video generation failed: No URI returned.");
 
   // Fetch with API Key
-  const response = await fetch(`${downloadLink}&key=${API_KEY}`);
+  const response = await fetch(`${downloadLink}&key=${process.env.API_KEY}`);
   if (!response.ok) throw new Error("Failed to download generated video.");
   
   const blob = await response.blob();
