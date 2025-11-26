@@ -212,7 +212,7 @@ const ArtifactPanel: React.FC<ArtifactPanelProps> = ({ artifact, onClose, onUpda
       if (artifact.type !== 'document') return '';
       // Use the first file which is usually the markdown content
       const content = artifact.files[0]?.content || '';
-      return marked.parse(content);
+      return marked.parse(content) as string;
   }, [artifact.files, artifact.type]);
 
   // Check if document contains a table
@@ -324,7 +324,7 @@ const ArtifactPanel: React.FC<ArtifactPanelProps> = ({ artifact, onClose, onUpda
             </head>
             <body>
                 <div class="page">
-                    ${marked.parse(content)}
+                    ${marked.parse(content) as string}
                 </div>
             </body>
             </html>

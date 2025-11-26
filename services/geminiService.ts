@@ -1,6 +1,9 @@
 import { GoogleGenAI } from "@google/genai";
 import { AppMode, ModelId, Attachment } from "../types";
 
+// Ensure process.env is typed for TypeScript
+declare const process: any;
+
 const FILE_SEPARATOR = "___FILE:";
 
 const SYSTEM_INSTRUCTIONS: Record<string, string> = {
@@ -184,16 +187,18 @@ export const generateVideo = async (prompt: string): Promise<string> => {
     operation = await ai.operations.getVideosOperation({operation: operation});
   }
 
-  // Safe access for download link
-  const videos = operation.response?.generatedVideos;
+  // Safe access for download link using optional chaining to prevent TS build errors
+  // Cast response to any to access properties dynamically
+  const response = operation.response as any;
+  const videos = response?.generatedVideos;
   const downloadLink = videos?.[0]?.video?.uri;
 
   if (!downloadLink) throw new Error("Video generation failed: No URI returned.");
 
   // Fetch with API Key
-  const response = await fetch(`${downloadLink}&key=${process.env.API_KEY}`);
-  if (!response.ok) throw new Error("Failed to download generated video.");
+  const vidResponse = await fetch(`${downloadLink}&key=${process.env.API_KEY}`);
+  if (!vidResponse.ok) throw new Error("Failed to download generated video.");
   
-  const blob = await response.blob();
+  const blob = await vidResponse.blob();
   return URL.createObjectURL(blob);
 };
