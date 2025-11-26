@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Plus, Layout, Menu, LogOut, ChevronDown, Sparkles, FileText, ChevronRight, Volume2, StopCircle, Play, Image as ImgIcon, Video as VideoIcon } from 'lucide-react';
+import { Plus, Layout, Menu, LogOut, ChevronDown, Sparkles, FileText, ChevronRight, Volume2, Image as ImgIcon, Video as VideoIcon } from 'lucide-react';
 import InputArea from './components/InputArea';
 import ArtifactPanel from './components/ArtifactPanel';
-import { AppMode, ChatSession, Message, ModelId, User, Artifact, ArtifactFile, Attachment, GeneratedMedia } from './types';
+import { AppMode, ChatSession, Message, ModelId, User, Artifact, ArtifactFile, Attachment } from './types';
 import * as storage from './services/storage';
 import * as geminiService from './services/geminiService';
 
@@ -559,7 +559,7 @@ const App: React.FC = () => {
             </div>
           ) : (
             <div className="flex flex-col gap-8 pb-4">
-              {currentChat.messages.map((msg, index) => (
+              {currentChat.messages.map((msg) => (
                 <div key={msg.id} className="flex gap-6 group">
                   <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center mt-1 shadow-md ${msg.role === 'user' ? 'bg-zinc-800' : 'bg-transparent border border-zinc-800/50'}`}>
                     {msg.role === 'user' ? (

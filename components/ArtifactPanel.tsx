@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { X, Download, Code, Eye, FileText, Monitor, File, Folder, FolderOpen, Package, ChevronDown, Table as TableIcon, Terminal, RefreshCw } from 'lucide-react';
 import { Artifact, ArtifactFile } from '../types';
 import JSZip from 'jszip';

@@ -1,4 +1,4 @@
-import { GoogleGenAI, GenerateContentStreamResult } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 import { AppMode, ModelId, Attachment } from "../types";
 
 const FILE_SEPARATOR = "___FILE:";
@@ -62,7 +62,7 @@ export const streamResponse = async (
   attachments: Attachment[],
   useSearch: boolean,
   onChunk: (text: string) => void
-): Promise<GenerateContentStreamResult> => {
+): Promise<any> => {
   if (!process.env.API_KEY) {
     throw new Error("API Key is missing.");
   }
