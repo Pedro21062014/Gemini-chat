@@ -153,8 +153,11 @@ export const generateImage = async (prompt: string): Promise<string> => {
     }
   });
 
-  if (response.candidates && response.candidates[0].content.parts) {
-    for (const part of response.candidates[0].content.parts) {
+  const candidate = response.candidates?.[0];
+  const content = candidate?.content;
+
+  if (content?.parts) {
+    for (const part of content.parts) {
       if (part.inlineData) {
         const base64EncodeString = part.inlineData.data;
         return `data:image/png;base64,${base64EncodeString}`;
